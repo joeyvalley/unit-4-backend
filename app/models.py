@@ -10,7 +10,7 @@ class Profile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(
-        upload_to=f'users/{username}/avatar/', blank=True, null=True, max_length=9999)
+        upload_to=f'avatars/', blank=True, null=True, max_length=9999)
     likes = ArrayField(models.IntegerField(), blank=True, null=True)
 
     class Meta:
@@ -23,7 +23,7 @@ class Profile(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=f'users/{author}/posts/')
+    image = models.ImageField(upload_to=f'posts/')
     caption = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     liked_by = ArrayField(models.IntegerField(),
