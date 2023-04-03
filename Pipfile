@@ -10,6 +10,7 @@ pillow = "*"
 djangorestframework = "*"
 gunicorn = "*"
 dj-database-url = "*"
+djangorestframework-jwt = "*"
 
 [dev-packages]
 
