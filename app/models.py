@@ -11,6 +11,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(
         upload_to=f'avatars/', blank=True, null=True, max_length=9999)
+    posts = ArrayField(models.IntegerField(), blank=True, null=True)
     likes = ArrayField(models.IntegerField(), blank=True, null=True)
 
     class Meta:

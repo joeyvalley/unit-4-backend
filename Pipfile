@@ -11,6 +11,8 @@ djangorestframework = "*"
 gunicorn = "*"
 dj-database-url = "*"
 djangorestframework-jwt = "*"
+djangorestframework-simplejwt = "*"
+django-filter = "*"
 
 [dev-packages]
 

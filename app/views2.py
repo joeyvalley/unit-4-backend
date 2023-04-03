@@ -2,15 +2,11 @@ from rest_framework import permissions, viewsets
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import HttpResponse
-from django.core import serializers
-from django.http import JsonResponse
-
 
 from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
 from .models import Comment, Post, Profile
 
-# THESE ARE THE VIEWS FOR THE BACKEND ADMIN STUFF
+# Create your views here.
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -26,6 +22,10 @@ class PostViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+# def IndividualUserViewSet(viewsets.ModelViewSet):
+#     return "hi"
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -70,18 +70,3 @@ class IsStaffOrTargetUser(permissions.BasePermission):
         # allow logged in user to view own details,
         # allows staff to view all records.
         return obj == request.user or request.user.is_staff
-
-
-# THESE ARE THE VIEWS FOR THE REQUESTS FROM THE FRONTEND
-def MainFeed(request):
-    posts = Post.objects.all()
-    data = serializers.serialize('json', posts)
-    return JsonResponse({'posts': data})
-
-
-def GetUser(request, user_id):
-    user = User.objects.get(username=user_id)
-    data = serializers.serialize('json', [user])
-    print(user)
-    return JsonResponse({'user': data})
-    # return JsonResponse({'user': data})
