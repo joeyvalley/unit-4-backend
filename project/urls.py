@@ -7,6 +7,7 @@ from app.views import PostViewSet, ProfileViewSet, UserViewSet, MainFeed, GetUse
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView
 )
 
 
@@ -21,5 +22,6 @@ urlpatterns = [
     path('home/', MainFeed),
     path('users/<user_id>/', GetUser),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
