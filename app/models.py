@@ -18,7 +18,7 @@ class Profile(models.Model):
         ordering = ['username']
 
     def __str__(self):
-        return self.username
+        return f'{self.username}'
 
 
 class Post(models.Model):

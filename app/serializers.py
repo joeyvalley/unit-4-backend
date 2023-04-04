@@ -3,6 +3,23 @@ from django.contrib.auth.models import User
 from .models import Comment, Post, Profile
 
 
+class UserSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password', 'profile')
+        extra_kwargs = {
+            'password': {
+                'write_only': True
+            }
+        }
+
+    def get_profile(self, obj):
+        profile = Profile.objects.filter(username=obj).first()
+        return ProfileSerializer(profile).data
+
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -10,23 +27,16 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+
+    author = UserSerializer()
+
     class Meta:
         model = Post
         fields = '__all__'
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Profile
         fields = '__all__'
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'password')
-        extra_kwargs = {
-            'password': {
-                'write_only': True
-            }
-        }

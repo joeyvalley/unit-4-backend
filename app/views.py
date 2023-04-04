@@ -1,16 +1,20 @@
+
+# Models and serializers for admin panel.
+from .models import Comment, Post, Profile
+from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
+
+# Dependencies for Django authorization/authentication.
+from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import HttpResponse
-from django.core import serializers
-from django.http import JsonResponse
+
+# Dependencies for client views
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
-from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
-from .models import Comment, Post, Profile
-
-# THESE ARE THE VIEWS FOR THE BACKEND ADMIN STUFF
+# Admin panel views and serializers.
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -72,16 +76,44 @@ class IsStaffOrTargetUser(permissions.BasePermission):
         return obj == request.user or request.user.is_staff
 
 
-# THESE ARE THE VIEWS FOR THE REQUESTS FROM THE FRONTEND
-def MainFeed(request):
+# Client-side views and serializers.
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'Main Feed': '/api/home/',
+        'User Profile': '/api/users/<str:username>/',
+
+        'Individual Post': '/api/post/<str:post_id>',
+        'Create Post': '/api/post/',
+        'Update Post': '/api/post/<str:post_id>/',
+        'Delete Post': '/api/post/<str:post_id>/',
+
+        'Sign Up': '/api/auth/sign-up/',
+        'Sign In': '/api/auth/sign-in/',
+
+        'Edit Profile': '/auth/edit/<str:username>/',
+        'Delete Profile': '/auth/delete/<str:username>/'
+    }
+    return Response(api_urls)
+
+
+@api_view(['GET'])
+def mainFeed(request):
     posts = Post.objects.all()
-    data = serializers.serialize('json', posts)
-    return JsonResponse({'posts': data})
+    serializer = PostSerializer(posts, many=True)
+    print(serializer.data)
+    return Response(serializer.data)
 
 
+@api_view(['GET'])
+def individualPost(request, post_id):
+    posts = Post.objects.get(id=post_id)
+    serializer = PostSerializer(posts, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def GetUser(request, user_id):
     user = User.objects.get(username=user_id)
-    data = serializers.serialize('json', [user])
-    print(user)
-    return JsonResponse({'user': data})
-    # return JsonResponse({'user': data})
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
