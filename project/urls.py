@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework import routers
-from app.views import PostViewSet, ProfileViewSet, UserViewSet, apiOverview, mainFeed, individualPost, GetUser
+from app.views import PostViewSet, ProfileViewSet, UserViewSet, apiOverview, mainFeed, individualPost, GetUser, GetImage
 # from rest_framework_simplejwt.views import (
 #     TokenObtainPairView,
 #     TokenRefreshView,
@@ -18,7 +18,9 @@ urlpatterns = [
     path('api/', apiOverview, name="api-endpoints"),
     path('api/home/', mainFeed, name="main-feed"),
     path('api/post/<str:post_id>', individualPost, name="individual-post"),
-    path('api/users/<str:user_id>', GetUser, name="user-profile")
+    path('api/users/<str:user_id>', GetUser, name="user-profile"),
+    path('posts/<str:img>', GetImage, name="see-image"),
+    path('avatars/<str:img>', GetImage, name="see-image")
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('', include(router.urls)),
 ]
