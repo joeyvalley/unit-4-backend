@@ -1,5 +1,8 @@
 
 # Models and serializers for admin panel.
+from django.http import Http404, FileResponse
+from django.conf import settings
+import os
 from .models import Comment, Post, Profile
 from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
 
@@ -92,6 +95,7 @@ def apiOverview(request):
     api_urls = {
         'Main Feed': '/api/home/',
         'User Profile': '/api/users/<str:username>/',
+        'Image File': '/posts/<str:img>',
 
         'Individual Post': '/api/post/<str:post_id>',
         'Create Post': '/api/post/',
@@ -105,6 +109,8 @@ def apiOverview(request):
         'Delete Profile': '/auth/delete/<str:username>/'
     }
     return Response(api_urls)
+
+# GET Methods
 
 
 @api_view(['GET'])
@@ -127,3 +133,60 @@ def GetUser(request, user_id):
     user = User.objects.get(username=user_id)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def GetPostImage(request, img):
+    # Get the path to the image file
+    image_path = os.path.join(settings.BASE_DIR, f'posts/{img}')
+
+    # Check if the file exists
+    if not os.path.isfile(image_path):
+        raise Http404('Image file not found')
+
+    # Create a response that serves the image file
+    response = FileResponse(open(image_path, 'rb'))
+    response['Content-Type'] = 'image/jpeg'
+
+    return response
+
+
+@api_view(['GET'])
+def GetProfilePicture(request, img):
+    # Get the path to the image file
+    image_path = os.path.join(settings.BASE_DIR, f'avatars/{img}')
+
+    # Check if the file exists
+    if not os.path.isfile(image_path):
+        raise Http404('Image file not found')
+
+    # Create a response that serves the image file
+    response = FileResponse(open(image_path, 'rb'))
+    response['Content-Type'] = 'image/jpeg'
+
+    return response
+
+# POST Methods
+
+
+@api_view(['POST'])
+def CreateProfile(request):
+    fname = request.data.get('fname')
+    lname = request.data.get('lname')
+    bio = request.data.get('bio')
+    bio = request.data.get('bio')
+    avatar = request.data.get('avatar')
+    uid = request.data.get('username_id')
+
+    post = Post.objects.create(firstName=fname, lastName=lname,
+                               username=uid, bio=bio, profile_picture=avatar, posts=[], likes=[])
+    data = {
+        'id': post.id,
+        'firstName': post.firstName,
+        'lastName': post.lastName,
+        'bio': post.bio,
+        'profile_picture': post.profile_picture,
+        'posts': post.posts,
+        'likes': post.likes,
+    }
+    return Response(data)

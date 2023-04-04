@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
+
 # router = routers.DefaultRouter()
 # router.register(r'user', UserViewSet)
 # router.register(r'posts', PostViewSet)
