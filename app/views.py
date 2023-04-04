@@ -13,6 +13,8 @@ from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, U
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
 
 # Dependencies for client views
@@ -21,6 +23,14 @@ from rest_framework.decorators import api_view
 
 
 # Admin panel views and serializers.
+
+class CategoryListView(APIView):
+
+    def get(self, request, format=None):
+        pass
+
+    def post(self, request, format=None):
+        pass
 
 
 class CommentViewSet(viewsets.ModelViewSet):
