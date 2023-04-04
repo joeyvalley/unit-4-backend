@@ -8,6 +8,6 @@ POST {{url}}api/token
 Content-Type: application/json
 
 {
-    "username": "admin",
-    "password": "password"
+    "username": "jas",
+    "password": "password666"
 }
