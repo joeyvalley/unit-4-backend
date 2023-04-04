@@ -1,0 +1,13 @@
+@url = http://localhost:8000/
+
+###
+GET  {{url}}
+
+###
+POST {{url}}api/token
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "password"
+}
