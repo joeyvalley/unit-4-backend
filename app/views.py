@@ -1,5 +1,8 @@
 
 # Models and serializers for admin panel.
+from rest_framework.views import APIView
+import cloudinary.uploader
+from rest_framework.parsers import MultiPartParser, JSONParser
 from django.http import Http404, FileResponse
 from django.conf import settings
 import os
@@ -104,6 +107,11 @@ def apiOverview(request):
 
 
 @api_view(['GET'])
+def defaultView(request):
+    return Response({'message': 'hello'})
+
+
+@api_view(['GET'])
 def mainFeed(request):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True)
@@ -164,19 +172,50 @@ def CreateProfile(request):
     fname = request.data.get('fname')
     lname = request.data.get('lname')
     bio = request.data.get('bio')
-    bio = request.data.get('bio')
-    avatar = request.data.get('avatar')
-    uid = request.data.get('username_id')
+    uid = request.data.get('uid')
 
-    post = Post.objects.create(firstName=fname, lastName=lname,
-                               username=uid, bio=bio, profile_picture=avatar, posts=[], likes=[])
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+
+    file = request.data.get('avatar')
+    url = cloudinary.uploader.upload(file)['secure_url']
+
+    post = Profile.objects.create(firstName=fname, lastName=lname,
+                                  username_id=uid, bio=bio, profile_picture=url, posts=[], likes=[])
     data = {
-        'id': post.id,
-        'firstName': post.firstName,
-        'lastName': post.lastName,
-        'bio': post.bio,
-        'profile_picture': post.profile_picture,
-        'posts': post.posts,
-        'likes': post.likes,
+        'User ID': post.username_id,
+        'First Name': post.firstName,
+        'Last Name': post.lastName,
+        'Bio': post.bio,
+        'Avatar': post.profile_picture,
+        'Posts': post.posts,
+        'Likes': post.likes,
+    }
+    return Response(data)
+
+
+@api_view(['POST'])
+def CreatePost(request):
+    author = request.data.get('id')
+    caption = request.data.get('lname')
+
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+
+    file = request.data.get('image')
+    url = cloudinary.uploader.upload(file)['secure_url']
+
+    post = Post.objects.create(
+        author_id=author, image=url, caption=caption, liked_by=[])
+    data = {
+        'User ID': post.author_id,
+        'Image URL': post.image,
+        'Caption': post.caption,
+        'Date Created': post.created_at,
+        'Liked By': post.liked_by
     }
     return Response(data)
