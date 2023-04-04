@@ -140,6 +140,22 @@ def GetPostImage(request, img):
 
     return response
 
+
+@api_view(['GET'])
+def GetProfilePicture(request, img):
+    # Get the path to the image file
+    image_path = os.path.join(settings.BASE_DIR, f'avatars/{img}')
+
+    # Check if the file exists
+    if not os.path.isfile(image_path):
+        raise Http404('Image file not found')
+
+    # Create a response that serves the image file
+    response = FileResponse(open(image_path, 'rb'))
+    response['Content-Type'] = 'image/jpeg'
+
+    return response
+
 # POST Methods
 
 
