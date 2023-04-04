@@ -12,6 +12,7 @@ gunicorn = "*"
 dj-database-url = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
+cloudinary = "*"
 
 [dev-packages]
 

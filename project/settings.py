@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import cloudinary
 import dj_database_url
 from pathlib import Path
 
@@ -138,3 +139,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+
+cloudinary.config(
+    cloud_name="dnld1cqvy",
+    api_key="757565948828129",
+    api_secret="io64g4omnpOwjZW7ZORvKxGENT4")
