@@ -11,7 +11,6 @@ from rest_framework_simplejwt.views import (
 )
 
 
-
 # router = routers.DefaultRouter()
 # router.register(r'user', UserViewSet)
 # router.register(r'posts', PostViewSet)
@@ -28,8 +27,7 @@ urlpatterns = [
     path('posts/<str:img>', GetPostImage, name="see-image"),
     path('avatars/<str:img>', GetProfilePicture, name="see-image"),
     path('api/create-profile', CreateProfile, name="create-profile"),
-    path('api/create-post', CreatePost, name="create-post")
-    # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/create-post', CreatePost, name="create-post"),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),

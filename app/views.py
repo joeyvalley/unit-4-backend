@@ -125,7 +125,6 @@ def defaultView(request):
 def mainFeed(request):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True)
-    print(serializer.data)
     return Response(serializer.data)
 
 
