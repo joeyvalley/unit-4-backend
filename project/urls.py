@@ -20,6 +20,8 @@ urlpatterns = [
     path('avatars/<str:img>', GetProfilePicture, name="see-image"),
     path('api/create-profile', CreateProfile, name="create-profile"),
     path('api/create-post', CreatePost, name="create-post"),
+    path('api/edit-post/', like, name="like-post"),
+
     # JWT Token
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
