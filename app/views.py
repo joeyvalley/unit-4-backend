@@ -1,5 +1,7 @@
 
 # Models and serializers for admin panel.
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -267,6 +269,18 @@ def like(request):
     return Response({'current like': post.liked_by})
 
 
-@api_view(['POST'])
-def TestMe(request):
-    return Response({'hi': 'bitch'})
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # Override the default serializer to add custom fields
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        # Add custom fields to the token payload
+        data['custom_field'] = 'value'
+        return data
+
+
+class TestMe(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+# @api_view(['POST'])
+# def TestMe(request):
+#     return Response({'hi': 'bitch'})
