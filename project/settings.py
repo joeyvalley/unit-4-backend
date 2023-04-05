@@ -30,8 +30,7 @@ DEBUG = False
 
 
 # This allows us to run our app locally and on Heroku
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.herokuapp.com',
-                 'jv-unit-4-project-backend.herokuapp.com', 'jv-unit-4-project-backend.herokuapp.com/api/token']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.herokuapp.com']
 
 
 # Application definition
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'app',
 ]
 
