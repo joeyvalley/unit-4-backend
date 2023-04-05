@@ -1,4 +1,4 @@
-@url = http://127.0.0.1:8080/
+@url = http://127.0.0.1:8000/
 
 ###
 GET  {{url}}
@@ -8,6 +8,18 @@ POST {{url}}api/token/
 Content-Type: application/json
 
 {
-    "username": "cragm00r",
-    "password": "grabsomBUD5"
+    "username": "admin",
+    "password": "password"
 }
+
+
+###
+POST {{url}}api/edit-post/
+Content-Type: application/json
+
+{
+    "user_id": 3,
+    "post_id": 1
+}
+
+###

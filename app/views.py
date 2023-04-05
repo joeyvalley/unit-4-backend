@@ -249,3 +249,25 @@ def CreatePost(request):
         'Liked By': post.liked_by
     }
     return Response(data)
+
+
+@api_view(['POST'])
+def like(request):
+    post_id = request.data['post_id']
+    post = Post.objects.get(id=post_id)
+    user_id = request.data['user_id']
+    if user_id in post.liked_by:
+        post.liked_by.remove(user_id)
+        post.save()
+        print("removed like")
+        return Response({'current like': post.liked_by})
+    post.liked_by.append(user_id)
+    post.save()
+    print()
+    return Response({'current like': post.liked_by})
+
+    # user = request.user
+    # liked = likes.objects.filter(user=user, post=post).count()
+# if not liked:
+#         liked = likes.objects.create(user=user, post=post)
+#         current_likes = current_likes + 1
