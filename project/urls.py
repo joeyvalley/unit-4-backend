@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/create-post', CreatePost, name="create-post"),
 
     # Authentication
-    path('api/token/', CustomTokenObtainPairView.as_view(),
+    path('login/', TokenObtainPairView.as_view(),
          name='token_obtain_pair'),
     path('api/edit-post/', like, name="like-post"),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
