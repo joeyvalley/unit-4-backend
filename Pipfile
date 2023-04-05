@@ -13,6 +13,7 @@ dj-database-url = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
 cloudinary = "*"
+jwt = "*"
 
 [dev-packages]
 

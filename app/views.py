@@ -1,5 +1,7 @@
 
 # Models and serializers for admin panel.
+from rest_framework import status
+from rest_framework_simplejwt.views import TokenVerifyView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
 import cloudinary.uploader
@@ -7,6 +9,7 @@ from rest_framework.parsers import MultiPartParser, JSONParser
 from django.http import Http404, FileResponse
 from django.conf import settings
 import os
+import jwt
 from .models import Comment, Post, Profile
 from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
 
@@ -80,15 +83,39 @@ class IsStaffOrTargetUser(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj == request.user or request.user.is_staff
 
-# JWT authorization views
+
+# JWT authorization / authentication views
 
 
-class VerifyTokenView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+class CustomTokenVerifyView(TokenVerifyView):
+    def decode_token(self, token):
+        try:
+            decoded_token = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=['HS256'])
+            return decoded_token
+        except jwt.ExpiredSignatureError:
+            raise exceptions.AuthenticationFailed('Token has expired')
+        except jwt.InvalidTokenError:
+            raise exceptions.AuthenticationFailed('Token is invalid')
 
-    def get(self, request):
-        return Response({'message': 'Token is valid'})
+    def post(self, request, *args, **kwargs):
+        token = request.data['token']
+        try:
+            decoded_token = self.decode_token(token)
+            print(f"Decoded token: {decoded_token}")
+            return Response({'token': token, 'user_id': decoded_token['user_id']})
+        except Exception as e:
+            return Response(False)
+
+        return Response({'detail': 'Your custom success message.'}, status=status.HTTP_200_OK)
+
+
+# class VerifyTokenView(APIView):
+#     authentication_classes = [JWTAuthentication]
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+#         return Response({'message': 'Token is valid'})
 
 
 # Client-side views and serializers.
