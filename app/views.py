@@ -1,5 +1,9 @@
 
 # Models and serializers for admin panel.
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.views import APIView
+import cloudinary.uploader
+from rest_framework.parsers import MultiPartParser, JSONParser
 from django.http import Http404, FileResponse
 from django.conf import settings
 import os
@@ -63,30 +67,28 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
-    """
-    Custom permission to only allow owners of an object to edit it.
-    """
-
     def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests,
-        # due to we need to decrease the quantity of the product,
-        # we'll always allow PUT requests too.
         if request.method in permissions.SAFE_METHODS or request.method == 'PUT':
             return True
-        # Write permissions are only allowed to the owner of the snippet.
         return obj.owner == request.user
 
 
 class IsStaffOrTargetUser(permissions.BasePermission):
     def has_permission(self, request, view):
-        # allow user to list all users if logged in user is staff
         return view.action == 'retrieve' or request.user.is_staff
 
     def has_object_permission(self, request, view, obj):
-        # allow logged in user to view own details,
-        # allows staff to view all records.
         return obj == request.user or request.user.is_staff
+
+# JWT authorization views
+
+
+class VerifyTokenView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({'message': 'Token is valid'})
 
 
 # Client-side views and serializers.
@@ -114,10 +116,14 @@ def apiOverview(request):
 
 
 @api_view(['GET'])
+def defaultView(request):
+    return Response({'message': 'hello'})
+
+
+@api_view(['GET'])
 def mainFeed(request):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True)
-    print(serializer.data)
     return Response(serializer.data)
 
 
@@ -174,19 +180,50 @@ def CreateProfile(request):
     fname = request.data.get('fname')
     lname = request.data.get('lname')
     bio = request.data.get('bio')
-    bio = request.data.get('bio')
-    avatar = request.data.get('avatar')
-    uid = request.data.get('username_id')
+    uid = request.data.get('uid')
 
-    post = Post.objects.create(firstName=fname, lastName=lname,
-                               username=uid, bio=bio, profile_picture=avatar, posts=[], likes=[])
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+
+    file = request.data.get('avatar')
+    url = cloudinary.uploader.upload(file)['secure_url']
+
+    post = Profile.objects.create(firstName=fname, lastName=lname,
+                                  username_id=uid, bio=bio, profile_picture=url, posts=[], likes=[])
     data = {
-        'id': post.id,
-        'firstName': post.firstName,
-        'lastName': post.lastName,
-        'bio': post.bio,
-        'profile_picture': post.profile_picture,
-        'posts': post.posts,
-        'likes': post.likes,
+        'User ID': post.username_id,
+        'First Name': post.firstName,
+        'Last Name': post.lastName,
+        'Bio': post.bio,
+        'Avatar': post.profile_picture,
+        'Posts': post.posts,
+        'Likes': post.likes,
+    }
+    return Response(data)
+
+
+@api_view(['POST'])
+def CreatePost(request):
+    author = request.data.get('id')
+    caption = request.data.get('lname')
+
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+
+    file = request.data.get('image')
+    url = cloudinary.uploader.upload(file)['secure_url']
+
+    post = Post.objects.create(
+        author_id=author, image=url, caption=caption, liked_by=[])
+    data = {
+        'User ID': post.author_id,
+        'Image URL': post.image,
+        'Caption': post.caption,
+        'Date Created': post.created_at,
+        'Liked By': post.liked_by
     }
     return Response(data)

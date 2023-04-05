@@ -1,13 +1,13 @@
-@url = http://localhost:8000/
+@url = http://127.0.0.1:8080/
 
 ###
 GET  {{url}}
 
 ###
-POST {{url}}api/token
+POST {{url}}api/token/
 Content-Type: application/json
 
 {
-    "username": "jas",
-    "password": "password666"
+    "username": "cragm00r",
+    "password": "grabsomBUD5"
 }
