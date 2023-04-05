@@ -29,7 +29,8 @@ DEBUG = False
 
 
 # This allows us to run our app locally and on Heroku
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.herokuapp.com',
+                 'jv-unit-4-project-backend.herokuapp.com', 'jv-unit-4-project-backend.herokuapp.com/api/token']
 
 
 # Application definition
@@ -78,15 +79,25 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases# If you prefer, you don't need this variables. You can just use the URL directly.
-db_name = 'unit4_backend'
-user = 'joeyvalley'
-password = 'password'
+# db_name = 'unit4_backend'
+# user = 'joeyvalley'
+# password = 'password'
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=f'postgres://{user}:{password}@localhost/{db_name}'
+#     )
+# }
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f'postgres://{user}:{password}@localhost/{db_name}'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ddq8n840r6jpgm',
+        'USER': 'glsizkpviyjcxx',
+        'PASSWORD': '555d488add1eef8d8f34a4e50d952db4985a801c88fa9cbf00e1b6d80ba929db',
+        'HOST': 'ec2-44-215-1-253.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
 }
 
 

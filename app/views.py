@@ -1,7 +1,7 @@
 
 # Models and serializers for admin panel.
 from rest_framework import status
-from rest_framework_simplejwt.views import TokenVerifyView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
 import cloudinary.uploader
@@ -85,6 +85,9 @@ class IsStaffOrTargetUser(permissions.BasePermission):
 
 
 # JWT authorization / authentication views
+class CustomTokenObtainPairView(TokenObtainPairView):
+    def dotheThing():
+        return Response({"hi": "bitch"})
 
 
 class CustomTokenVerifyView(TokenVerifyView):
@@ -108,14 +111,6 @@ class CustomTokenVerifyView(TokenVerifyView):
             return Response(False)
 
         return Response({'detail': 'Your custom success message.'}, status=status.HTTP_200_OK)
-
-
-# class VerifyTokenView(APIView):
-#     authentication_classes = [JWTAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request):
-#         return Response({'message': 'Token is valid'})
 
 
 # Client-side views and serializers.
