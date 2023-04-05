@@ -27,6 +27,7 @@ class Post(models.Model):
     image = models.CharField(max_length=100, blank=True, null=True)
     caption = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # Likes = models.IntegerField(default=0)
     liked_by = ArrayField(models.IntegerField(),
                           blank=True, null=True, default=list)
 
@@ -46,3 +47,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.text} by {self.author} on {self.post}'
+
+
+# class Likes(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL,
+#                              on_delete=models.CASCADE, related_name='user_likes')
+#     post = models.ForeignKey(
+#         Post, on_delete=models.CASCADE, related_name='post_likes')
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f'{self.user} liked {self.post}'
