@@ -1,8 +1,9 @@
 from app.views import *
 from django.contrib import admin
 from django.urls import path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView, TokenRefreshView)
+# from rest_framework_simplejwt.views import (
+#     TokenObtainPairView, TokenRefreshView)
+from rest_framework.authtoken.views import ObtainAuthToken
 
 urlpatterns = [
     # Admin
@@ -17,10 +18,10 @@ urlpatterns = [
     path('avatars/<str:img>', GetProfilePicture, name="see-image"),
     path('api/create-profile', CreateProfile, name="create-profile"),
     path('api/create-post', CreatePost, name="create-post"),
+    path('api/edit-post/', like, name="like-post"),
 
     # Authentication
-    path('login/', TestMe.as_view(),  name='token_obtain_pair'),
-    path('api/edit-post/', like, name="like-post"),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', CustomTokenVerifyView.as_view(), name='token_verify'),
+    path('login/', CustomAuthToken.as_view(),  name='token_obtain_pair'),
+    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('api/token/verify/', CustomTokenVerifyView.as_view(), name='token_verify'),
 ]
