@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import cloudinary
 import dj_database_url
 from pathlib import Path
 from datetime import timedelta
@@ -132,6 +133,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
@@ -143,3 +150,9 @@ SIMPLE_JWT = {
 
     "AUTH_HEADER_TYPES": ("Bearer",)
 }
+
+
+cloudinary.config(
+    cloud_name="dnld1cqvy",
+    api_key="757565948828129",
+    api_secret="io64g4omnpOwjZW7ZORvKxGENT4")

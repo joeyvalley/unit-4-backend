@@ -1,16 +1,36 @@
+
+# Models and serializers for admin panel.
+from rest_framework.views import APIView
+import cloudinary.uploader
+from rest_framework.parsers import MultiPartParser, JSONParser
+from django.http import Http404, FileResponse
+from django.conf import settings
+import os
+from .models import Comment, Post, Profile
+from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
+
+# Dependencies for Django authorization/authentication.
+from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import HttpResponse
-from django.core import serializers
-from django.http import JsonResponse
+
+# Dependencies for client views
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
-from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
-from .models import Comment, Post, Profile
+# Admin panel views and serializers.
 
-# THESE ARE THE VIEWS FOR THE BACKEND ADMIN STUFF
+class CategoryListView(APIView):
+
+    def get(self, request, format=None):
+        pass
+
+    def post(self, request, format=None):
+        pass
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -72,16 +92,139 @@ class IsStaffOrTargetUser(permissions.BasePermission):
         return obj == request.user or request.user.is_staff
 
 
-# THESE ARE THE VIEWS FOR THE REQUESTS FROM THE FRONTEND
-def MainFeed(request):
+# Client-side views and serializers.
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'Main Feed': '/api/home/',
+        'User Profile': '/api/users/<str:username>/',
+        'Image File': '/posts/<str:img>',
+
+        'Individual Post': '/api/post/<str:post_id>',
+        'Create Post': '/api/post/',
+        'Update Post': '/api/post/<str:post_id>/',
+        'Delete Post': '/api/post/<str:post_id>/',
+
+        'Sign Up': '/api/auth/sign-up/',
+        'Sign In': '/api/auth/sign-in/',
+
+        'Edit Profile': '/auth/edit/<str:username>/',
+        'Delete Profile': '/auth/delete/<str:username>/'
+    }
+    return Response(api_urls)
+
+# GET Methods
+
+
+@api_view(['GET'])
+def defaultView(request):
+    return Response({'message': 'hello'})
+
+
+@api_view(['GET'])
+def mainFeed(request):
     posts = Post.objects.all()
-    data = serializers.serialize('json', posts)
-    return JsonResponse({'posts': data})
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)
 
 
+@api_view(['GET'])
+def individualPost(request, post_id):
+    posts = Post.objects.get(id=post_id)
+    serializer = PostSerializer(posts, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def GetUser(request, user_id):
     user = User.objects.get(username=user_id)
-    data = serializers.serialize('json', [user])
-    print(user)
-    return JsonResponse({'user': data})
-    # return JsonResponse({'user': data})
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def GetPostImage(request, img):
+    # Get the path to the image file
+    image_path = os.path.join(settings.BASE_DIR, f'posts/{img}')
+
+    # Check if the file exists
+    if not os.path.isfile(image_path):
+        raise Http404('Image file not found')
+
+    # Create a response that serves the image file
+    response = FileResponse(open(image_path, 'rb'))
+    response['Content-Type'] = 'image/jpeg'
+
+    return response
+
+
+@api_view(['GET'])
+def GetProfilePicture(request, img):
+    # Get the path to the image file
+    image_path = os.path.join(settings.BASE_DIR, f'avatars/{img}')
+
+    # Check if the file exists
+    if not os.path.isfile(image_path):
+        raise Http404('Image file not found')
+
+    # Create a response that serves the image file
+    response = FileResponse(open(image_path, 'rb'))
+    response['Content-Type'] = 'image/jpeg'
+
+    return response
+
+# POST Methods
+
+
+@api_view(['POST'])
+def CreateProfile(request):
+    fname = request.data.get('fname')
+    lname = request.data.get('lname')
+    bio = request.data.get('bio')
+    uid = request.data.get('uid')
+
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+
+    file = request.data.get('avatar')
+    url = cloudinary.uploader.upload(file)['secure_url']
+
+    post = Profile.objects.create(firstName=fname, lastName=lname,
+                                  username_id=uid, bio=bio, profile_picture=url, posts=[], likes=[])
+    data = {
+        'User ID': post.username_id,
+        'First Name': post.firstName,
+        'Last Name': post.lastName,
+        'Bio': post.bio,
+        'Avatar': post.profile_picture,
+        'Posts': post.posts,
+        'Likes': post.likes,
+    }
+    return Response(data)
+
+
+@api_view(['POST'])
+def CreatePost(request):
+    author = request.data.get('id')
+    caption = request.data.get('lname')
+
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+
+    file = request.data.get('image')
+    url = cloudinary.uploader.upload(file)['secure_url']
+
+    post = Post.objects.create(
+        author_id=author, image=url, caption=caption, liked_by=[])
+    data = {
+        'User ID': post.author_id,
+        'Image URL': post.image,
+        'Caption': post.caption,
+        'Date Created': post.created_at,
+        'Liked By': post.liked_by
+    }
+    return Response(data)

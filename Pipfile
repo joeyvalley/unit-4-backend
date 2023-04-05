@@ -10,9 +10,9 @@ pillow = "*"
 djangorestframework = "*"
 gunicorn = "*"
 dj-database-url = "*"
-djangorestframework-jwt = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
+cloudinary = "*"
 
 [dev-packages]
 
