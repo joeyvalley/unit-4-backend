@@ -266,8 +266,7 @@ def like(request):
     print()
     return Response({'current like': post.liked_by})
 
-    # user = request.user
-    # liked = likes.objects.filter(user=user, post=post).count()
-# if not liked:
-#         liked = likes.objects.create(user=user, post=post)
-#         current_likes = current_likes + 1
+
+@api_view(['POST'])
+def TestMe(request):
+    return Response({'hi': 'bitch'})
