@@ -286,7 +286,7 @@ def dislike(request):
     return Response({'Dislikes': post.dislike_by})
 
 
-class CustomAuthToken(ObtainAuthToken):
+class AuthenticateUser(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
@@ -297,15 +297,13 @@ class CustomAuthToken(ObtainAuthToken):
         return Response({'token': token.key, 'username': request.data['username']})
 
 
-class MyView(APIView):
+class VerifyAuthentication(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        print("geelo")
-        # token = request.data.get('token')
-        # print()
-        # return Response(token)
+    def get(self, request):
+        user = request.user
+        return Response({'message': f'Authenticated user: {user.username}'})
 
 
 @api_view(['POST'])
