@@ -190,8 +190,9 @@ def GetProfilePicture(request, img):
 
 @api_view(['POST'])
 def SignUp(request):
-    username: request.username
-    password: request.password
+    username = request.data.get('username')
+    password = request.data.get('password')
+    return Response({'username': username, 'password': password})
 
 
 @api_view(['POST'])
