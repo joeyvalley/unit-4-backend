@@ -232,7 +232,7 @@ def CreateProfile(request):
 @api_view(['POST'])
 def CreatePost(request):
     author = request.data.get('id')
-    caption = request.data.get('lname')
+    caption = request.data.get('caption')
 
     parser_classes = (
         MultiPartParser,
@@ -240,8 +240,8 @@ def CreatePost(request):
     )
 
     file = request.data.get('image')
-    url = cloudinary.uploader.upload(file)['secure_url']
-
+    # url = cloudinary.uploader.upload(file)['secure_url']
+    url = "hi"
     post = Post.objects.create(
         author_id=author, image=url, caption=caption, liked_by=[], dislike_by=[])
     data = {
