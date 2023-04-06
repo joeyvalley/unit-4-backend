@@ -85,6 +85,18 @@ class SignUp(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_permissions(self):
+        # allow non-authenticated user to create via POST
+        return (permissions.AllowAny() if self.request.method == 'POST' else IsStaffOrTargetUser()),
+
+    def perform_create(self, serializer):
+        password = make_password(self.request.data['password'])
+        serializer.save(password=password)
+
+    def perform_update(self, serializer):
+        password = make_password(self.request.data['password'])
+        serializer.save(password=password)
+
 
 # JWT authorization / authentication views
 class CustomTokenObtainPairView(TokenObtainPairView):
