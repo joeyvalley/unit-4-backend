@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path
 # from rest_framework_simplejwt.views import (
 #     TokenObtainPairView, TokenRefreshView)
-from rest_framework.authtoken.views import ObtainAuthToken
+# from rest_framework.authtoken.views import ObtainAuthToken
 
 urlpatterns = [
     # Admin
@@ -21,7 +21,6 @@ urlpatterns = [
     path('api/edit-post/', like, name="like-post"),
 
     # Authentication
-    path('login/', CustomAuthToken.as_view(),  name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/token/verify/', CustomTokenVerifyView.as_view(), name='token_verify'),
+    path('api/login/', CustomAuthToken.as_view(),  name='create-token'),
+    path('api/auth/', CustomVerifyToken.as_view(),  name='verify-token')
 ]
