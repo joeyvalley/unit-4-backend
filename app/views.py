@@ -1,13 +1,12 @@
 
 # Models and serializers for admin panel.
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
 import cloudinary.uploader
 from rest_framework.parsers import MultiPartParser, JSONParser
@@ -21,7 +20,6 @@ from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, U
 # Dependencies for Django authorization/authentication.
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
@@ -279,15 +277,15 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
+        print(token)
         return Response({'token': token.key, 'username': request.data['username']})
 
 
-class CustomVerifyToken(APIView):
+class MyView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        print("geelo")
-        # token = request.data.get('token')
-        # print()
-        # return Response(token)
+    def get(self, request):
+        user = request.user
+        # Perform actions with authenticated user
+        return Response({'message': f'Authenticated user: {user.username}'})
