@@ -147,7 +147,7 @@ def defaultView(request):
 
 @api_view(['GET'])
 def mainFeed(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
 
