@@ -1,9 +1,6 @@
 from app.views import *
 from django.contrib import admin
 from django.urls import path
-# from rest_framework_simplejwt.views import (
-#     TokenObtainPairView, TokenRefreshView)
-# from rest_framework.authtoken.views import ObtainAuthToken
 
 urlpatterns = [
     # Admin
@@ -22,5 +19,5 @@ urlpatterns = [
 
     # Authentication
     path('api/login/', CustomAuthToken.as_view(),  name='create-token'),
-    path('api/auth/', CustomVerifyToken.as_view(),  name='verify-token')
+    path('api/verify/', MyView.as_view(), name='my-view'),
 ]
