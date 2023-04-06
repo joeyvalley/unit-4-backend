@@ -81,7 +81,7 @@ class IsStaffOrTargetUser(permissions.BasePermission):
         return obj == request.user or request.user.is_staff
 
 
-class CreateUserView(generics.CreateAPIView):
+class SignUp(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -188,11 +188,11 @@ def GetProfilePicture(request, img):
 # POST Methods
 
 
-@api_view(['POST'])
-def SignUp(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    return Response({'username': username, 'password': password})
+# @api_view(['POST'])
+# def SignUp(request):
+#     username = request.data.get('username')
+#     password = request.data.get('password')
+#     return Response({'username': username, 'password': password})
 
 
 @api_view(['POST'])
