@@ -13,8 +13,8 @@ urlpatterns = [
     path('api/users/<str:user_id>', GetUser, name="user-profile"),
     path('posts/<str:img>', GetPostImage, name="see-image"),
     path('avatars/<str:img>', GetProfilePicture, name="see-image"),
-    path('api/create-profile', CreateProfile, name="create-profile"),
-    path('api/create-post', CreatePost, name="create-post"),
+    path('api/create-profile/', CreateProfile, name="create-profile"),
+    path('api/create-post/', CreatePost, name="create-post"),
     path('api/edit-post/', like, name="like-post"),
     path('api/rate-post/', dislike, name="dislike-post"),
 

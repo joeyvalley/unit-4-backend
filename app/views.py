@@ -240,8 +240,7 @@ def CreatePost(request):
     )
 
     file = request.data.get('image')
-    # url = cloudinary.uploader.upload(file)['secure_url']
-    url = "hi"
+    url = cloudinary.uploader.upload(file)['secure_url']
     post = Post.objects.create(
         author_id=author, image=url, caption=caption, liked_by=[], dislike_by=[])
     data = {
