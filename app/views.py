@@ -1,5 +1,6 @@
-
-# Models and serializers for admin panel.
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.http import Http404, FileResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
@@ -10,26 +11,19 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 from rest_framework.views import APIView
 import cloudinary.uploader
 from rest_framework.parsers import MultiPartParser, JSONParser
-from django.http import Http404, FileResponse
-from django.conf import settings
-import os
-import jwt
 from .models import Comment, Post, Profile
 from .serializers import CommentSerializer, PostSerializer, ProfileSerializer, UserSerializer
-
-# Dependencies for Django authorization/authentication.
-from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
-
-# Dependencies for client views
-from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+import os
+import jwt
 
 # Admin panel views and serializers.
+
 
 class CategoryListView(APIView):
 
@@ -87,6 +81,11 @@ class IsStaffOrTargetUser(permissions.BasePermission):
         return obj == request.user or request.user.is_staff
 
 
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 # JWT authorization / authentication views
 class CustomTokenObtainPairView(TokenObtainPairView):
     def dotheThing():
@@ -123,17 +122,6 @@ def apiOverview(request):
         'Main Feed': '/api/home/',
         'User Profile': '/api/users/<str:username>/',
         'Image File': '/posts/<str:img>',
-
-        'Individual Post': '/api/post/<str:post_id>',
-        'Create Post': '/api/post/',
-        'Update Post': '/api/post/<str:post_id>/',
-        'Delete Post': '/api/post/<str:post_id>/',
-
-        'Sign Up': '/api/auth/sign-up/',
-        'Sign In': '/api/auth/sign-in/',
-
-        'Edit Profile': '/auth/edit/<str:username>/',
-        'Delete Profile': '/auth/delete/<str:username>/'
     }
     return Response(api_urls)
 
@@ -201,6 +189,12 @@ def GetProfilePicture(request, img):
 
 
 @api_view(['POST'])
+def SignUp(request):
+    username: request.username
+    password: request.password
+
+
+@api_view(['POST'])
 def CreateProfile(request):
     fname = request.data.get('fname')
     lname = request.data.get('lname')
@@ -216,7 +210,7 @@ def CreateProfile(request):
     url = cloudinary.uploader.upload(file)['secure_url']
 
     post = Profile.objects.create(firstName=fname, lastName=lname,
-                                  username_id=uid, bio=bio, profile_picture=url, posts=[], likes=[])
+                                  username_id=uid, bio=bio, profile_picture=url, posts=[], likes=[], dislikes=[])
     data = {
         'User ID': post.username_id,
         'First Name': post.firstName,
