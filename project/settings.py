@@ -32,7 +32,7 @@ DEBUG = False
 # This allows us to run our app locally and on Heroku
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.herokuapp.com']
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGINS_ALLOW_ALL = True
 
 # Application definition
 
