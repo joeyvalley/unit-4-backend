@@ -23,3 +23,12 @@ Content-Type: application/json
 }
 
 ###
+POST {{url}}api/rate-post/
+Content-Type: application/json
+
+{
+    "user_id": 3,
+    "post_id": 1
+}
+
+###
