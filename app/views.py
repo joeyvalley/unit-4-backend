@@ -270,6 +270,22 @@ def like(request):
     return Response({'current like': post.liked_by})
 
 
+@api_view(['POST'])
+def dislike(request):
+    post_id = request.data['post_id']
+    post = Post.objects.get(id=post_id)
+    user_id = request.data['user_id']
+    if user_id in post.dislike_by:
+        post.dislike_by.remove(user_id)
+        post.save()
+        print("Hate it")
+        return Response({'Dislikes': post.dislike_by})
+    post.dislike_by.append(user_id)
+    post.save()
+    print('Hated it')
+    return Response({'Dislikes': post.dislike_by})
+
+
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -290,19 +306,3 @@ class MyView(APIView):
         # token = request.data.get('token')
         # print()
         # return Response(token)
-
-
-@api_view(['POST'])
-def dislike(request):
-    post_id = request.data['post_id']
-    post = Post.objects.get(id=post_id)
-    user_id = request.data['user_id']
-    if user_id in post.disliked_by:
-        post.disliked_by.remove(user_id)
-        post.save()
-        print("Hate it")
-        return Response({'Dislikes': post.dislike_by})
-    post.dislike_by.append(user_id)
-    post.save()
-    print('Hated it')
-    return Response({'current dislike': post.dislike_by})

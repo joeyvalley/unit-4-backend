@@ -84,26 +84,26 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
-# db_name = 'unit4_backend'
-# user = 'joeyvalley'
-# password = 'password'
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=f'postgres://{user}:{password}@localhost/{db_name}'
-#     )
-# }
+db_name = 'unit4_backend'
+user = 'joeyvalley'
+password = 'password'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ddq8n840r6jpgm',
-        'USER': 'glsizkpviyjcxx',
-        'PASSWORD': '555d488add1eef8d8f34a4e50d952db4985a801c88fa9cbf00e1b6d80ba929db',
-        'HOST': 'ec2-44-215-1-253.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=f'postgres://{user}:{password}@localhost/{db_name}'
+    )
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ddq8n840r6jpgm',
+#         'USER': 'glsizkpviyjcxx',
+#         'PASSWORD': '555d488add1eef8d8f34a4e50d952db4985a801c88fa9cbf00e1b6d80ba929db',
+#         'HOST': 'ec2-44-215-1-253.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation

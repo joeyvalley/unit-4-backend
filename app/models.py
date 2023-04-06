@@ -13,6 +13,7 @@ class Profile(models.Model):
     profile_picture = models.CharField(max_length=1000, blank=True, null=True)
     posts = ArrayField(models.IntegerField(), blank=True, null=True)
     likes = ArrayField(models.IntegerField(), blank=True, null=True)
+    dislikes = ArrayField(models.IntegerField(), blank=True, null=True)
 
     class Meta:
         ordering = ['username']
