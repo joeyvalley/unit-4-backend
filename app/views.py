@@ -99,32 +99,32 @@ class SignUp(generics.CreateAPIView):
 
 
 # JWT authorization / authentication views
-class CustomTokenObtainPairView(TokenObtainPairView):
-    def dotheThing():
-        return Response({"hi": "bitch"})
+# class CustomTokenObtainPairView(TokenObtainPairView):
+#     def dotheThing():
+#         return Response({"hi": "bitch"})
 
 
-class CustomTokenVerifyView(TokenVerifyView):
-    def decode_token(self, token):
-        try:
-            decoded_token = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=['HS256'])
-            return decoded_token
-        except jwt.ExpiredSignatureError:
-            raise exceptions.AuthenticationFailed('Token has expired')
-        except jwt.InvalidTokenError:
-            raise exceptions.AuthenticationFailed('Token is invalid')
+# class CustomTokenVerifyView(TokenVerifyView):
+#     def decode_token(self, token):
+#         try:
+#             decoded_token = jwt.decode(
+#                 token, settings.SECRET_KEY, algorithms=['HS256'])
+#             return decoded_token
+#         except jwt.ExpiredSignatureError:
+#             raise exceptions.AuthenticationFailed('Token has expired')
+#         except jwt.InvalidTokenError:
+#             raise exceptions.AuthenticationFailed('Token is invalid')
 
-    def post(self, request, *args, **kwargs):
-        token = request.data['token']
-        try:
-            decoded_token = self.decode_token(token)
-            print(f"Decoded token: {decoded_token}")
-            return Response({'token': token, 'user_id': decoded_token['user_id']})
-        except Exception as e:
-            return Response(False)
+#     def post(self, request, *args, **kwargs):
+#         token = request.data['token']
+#         try:
+#             decoded_token = self.decode_token(token)
+#             print(f"Decoded token: {decoded_token}")
+#             return Response({'token': token, 'user_id': decoded_token['user_id']})
+#         except Exception as e:
+#             return Response(False)
 
-        return Response({'detail': 'Your custom success message.'}, status=status.HTTP_200_OK)
+#         return Response({'detail': 'Your custom success message.'}, status=status.HTTP_200_OK)
 
 
 # Client-side views and serializers.
@@ -224,7 +224,7 @@ def CreateProfile(request):
 
     post = Profile.objects.create(firstName=fname, lastName=lname,
                                   username_id=uid, bio=bio, profile_picture=url, posts=[], likes=[], dislikes=[])
-    data = {
+    return Response({
         'User ID': post.username_id,
         'First Name': post.firstName,
         'Last Name': post.lastName,
@@ -232,32 +232,34 @@ def CreateProfile(request):
         'Avatar': post.profile_picture,
         'Posts': post.posts,
         'Likes': post.likes,
-    }
-    return Response(data)
+    })
 
 
 @api_view(['POST'])
 def CreatePost(request):
+    # Parse the request for our data.
     author = request.data.get('id')
     caption = request.data.get('caption')
 
+    # Upload file to Cloudinary for hosting, return the URL to the database.
     parser_classes = (
         MultiPartParser,
         JSONParser,
     )
-
     file = request.data.get('image')
     url = cloudinary.uploader.upload(file)['secure_url']
+
+    # Create a new post on the database.
     post = Post.objects.create(
         author_id=author, image=url, caption=caption, liked_by=[], dislike_by=[])
-    data = {
-        'User ID': post.author_id,
-        'Image URL': post.image,
-        'Caption': post.caption,
-        'Date Created': post.created_at,
-        'Liked By': post.liked_by
-    }
-    return Response(data)
+
+    # Update the user's profile to include the new post.
+    profile = Profile.objects.get(username=author)
+    profile.posts.append(post.id)
+    profile.save()
+
+    # Return the new post ID
+    return Response({'Post ID': post.id})
 
 
 @api_view(['POST'])
