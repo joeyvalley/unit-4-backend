@@ -243,7 +243,7 @@ def CreatePost(request):
     url = cloudinary.uploader.upload(file)['secure_url']
 
     post = Post.objects.create(
-        author_id=author, image=url, caption=caption, liked_by=[])
+        author_id=author, image=url, caption=caption, liked_by=[], dislike_by=[])
     data = {
         'User ID': post.author_id,
         'Image URL': post.image,
