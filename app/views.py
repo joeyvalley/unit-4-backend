@@ -1,5 +1,6 @@
 
 # Models and serializers for admin panel.
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -278,5 +279,15 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print(user)
-        return Response({'token': token.key})
+        print(request.data['username'])
+        return Response({'token': token.key, 'username': request.data['username']})
+
+
+class CustomVerifyToken(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        token = request.data.get('token')
+
+        return Response(token)
