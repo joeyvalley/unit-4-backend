@@ -20,5 +20,5 @@ urlpatterns = [
 
     # Authentication
     path('api/login/', AuthenticateUser.as_view(),  name='create-token'),
-    path('api/verify/', VerifyAuthenticatio.as_view(), name='my-view'),
+    path('api/verify/', VerifyAuthentication.as_view(), name='my-view'),
 ]
