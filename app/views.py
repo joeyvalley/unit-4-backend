@@ -279,7 +279,6 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print(request.data['username'])
         return Response({'token': token.key, 'username': request.data['username']})
 
 
@@ -288,6 +287,7 @@ class CustomVerifyToken(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        token = request.data.get('token')
-
-        return Response(token)
+        print("geelo")
+        # token = request.data.get('token')
+        # print()
+        # return Response(token)
