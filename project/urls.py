@@ -19,6 +19,6 @@ urlpatterns = [
     path('api/rate-post/', dislike, name="dislike-post"),
 
     # Authentication
-    path('api/login/', CustomAuthToken.as_view(),  name='create-token'),
-    path('api/verify/', MyView.as_view(), name='my-view'),
+    path('api/login/', AuthenticateUser.as_view(),  name='create-token'),
+    path('api/verify/', VerifyAuthenticatio.as_view(), name='my-view'),
 ]
