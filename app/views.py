@@ -294,6 +294,60 @@ def dislike(request):
     return Response({'Dislikes': post.dislike_by})
 
 
+@api_view(['POST'])
+def createComment(request):
+    post_id = request.data['post_id']
+    # post = Post.objects.get(id=post_id)
+    user_id = request.data['user_id']
+    comment = request.data['comment']
+    post = Comment.objects.create(
+        post_id=post_id, user_id=user_id, text=comment)
+    # post.comments.append({'user_id': user_id, 'comment': comment})
+    post.save()
+    print(post_id, user_id, comment)
+    return Response({'Comments': post.text})
+
+
+# @api_view(['POST'])
+# def friendRequest(request):
+#     user_id = request.data['user_id']
+#     friend_id = request.data['friend_id']
+#     user = Profile.objects.get(username=user_id)
+#     friends = Profile.objects.get(username=friend_id)
+
+    # if friend_id in user.friend_request:
+    #     user.friend_request.remove(friend_id)
+    #     user.save()
+
+    # user = Profile.objects.get(username=user_id)
+    # friends = Profile.objects.get(username=friend_id)
+
+    # return Response({'Friend Requests': user.friend_request})
+
+    # user.friend_request.append(friend_id)
+    # user.save()
+
+    # print(friends)
+    # return Response({'Friend Requests': user.friend_request})
+
+
+@api_view(['POST'])
+def friendRequest(request):
+    sender = request.data['sender']
+    receiver = request.data['receiver']
+    user = User.objects.get(username=sender)
+    profile = Profile.objects.get(username=user)
+    # if receiver in profile.friend_requests:
+    #     profile.friend_requests.remove(receiver)
+    #     profile.save()
+    #     print("removed friend request")
+    #     return Response({'current friend requests': profile.friend_requests})
+    # profile.friend_requests.append(receiver)
+    # profile.save()
+    print("added friend request")
+    return Response({'current friend requests': profile.friend_requests})
+
+
 class AuthenticateUser(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -309,22 +363,8 @@ class VerifyAuthentication(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
-        return Response({'message': f'Authenticated user: {user.username}'})
-
-
-@api_view(['POST'])
-def dislike(request):
-    post_id = request.data['post_id']
-    post = Post.objects.get(id=post_id)
-    user_id = request.data['user_id']
-    if user_id in post.disliked_by:
-        post.disliked_by.remove(user_id)
-        post.save()
-        print("Hate it")
-        return Response({'Dislikes': post.dislike_by})
-    post.dislike_by.append(user_id)
-    post.save()
-    print('Hated it')
-    return Response({'current dislike': post.dislike_by})
+    def post(self, request):
+        print("geelo")
+        # token = request.data.get('token')
+        # print()
+        # return Response(token)

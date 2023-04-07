@@ -17,6 +17,8 @@ urlpatterns = [
     path('api/create-post/', CreatePost, name="create-post"),
     path('api/edit-post/', like, name="like-post"),
     path('api/rate-post/', dislike, name="dislike-post"),
+    path('api/create-comment/', createComment, name="create-comment"),
+    path('api/friend-request/', friendRequest, name="friend-request"),
     path('api/sign-up/', SignUp.as_view(), name="sign-up"),
 
     # Authentication
