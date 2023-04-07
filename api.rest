@@ -46,20 +46,10 @@ POST {{url}}api/friend-request/
 Content-Type: application/json
 
 {
-    "user_id": 1,
-    "friend_id": 2
+  "username_id": 1,
+  "friend_id": 2
 }
 
 
+
 ###
-
-# ###
-# post {{url}}api/create-post/
-# Content-Type: application/json
-
-# {
-#     "user_id": 1,
-#     "title": "This is a title",
-#     "content": "This is a content"
-# }
-# ###

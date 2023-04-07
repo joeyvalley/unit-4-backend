@@ -308,44 +308,14 @@ def createComment(request):
     return Response({'Comments': post.text})
 
 
-# @api_view(['POST'])
-# def friendRequest(request):
-#     user_id = request.data['user_id']
-#     friend_id = request.data['friend_id']
-#     user = Profile.objects.get(username=user_id)
-#     friends = Profile.objects.get(username=friend_id)
-
-    # if friend_id in user.friend_request:
-    #     user.friend_request.remove(friend_id)
-    #     user.save()
-
-    # user = Profile.objects.get(username=user_id)
-    # friends = Profile.objects.get(username=friend_id)
-
-    # return Response({'Friend Requests': user.friend_request})
-
-    # user.friend_request.append(friend_id)
-    # user.save()
-
-    # print(friends)
-    # return Response({'Friend Requests': user.friend_request})
-
-
 @api_view(['POST'])
-def friendRequest(request):
-    sender = request.data['sender']
-    receiver = request.data['receiver']
-    user = User.objects.get(username=sender)
-    profile = Profile.objects.get(username=user)
-    # if receiver in profile.friend_requests:
-    #     profile.friend_requests.remove(receiver)
-    #     profile.save()
-    #     print("removed friend request")
-    #     return Response({'current friend requests': profile.friend_requests})
-    # profile.friend_requests.append(receiver)
-    # profile.save()
-    print("added friend request")
-    return Response({'current friend requests': profile.friend_requests})
+def FriendRequest(request):
+    user_id = request.data['user_id']
+    # friend_id = request.data['friend_id']
+    user = Profile.objects.get(username=user_id)
+    # friend = Profile.objects.get(username=friend_id)
+    print('FriendRequest')
+    return Response({'Friend Request': 'Sent'})
 
 
 class AuthenticateUser(ObtainAuthToken):
