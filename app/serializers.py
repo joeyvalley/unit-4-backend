@@ -27,7 +27,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-
     author = UserSerializer()
 
     class Meta:
@@ -40,3 +39,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+# class FollowSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Follow
+#         fields = '__all__'
