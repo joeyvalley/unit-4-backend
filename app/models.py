@@ -14,6 +14,8 @@ class Profile(models.Model):
     posts = ArrayField(models.IntegerField(), blank=True, null=True)
     likes = ArrayField(models.IntegerField(), blank=True, null=True)
     dislikes = ArrayField(models.IntegerField(), blank=True, null=True)
+    # friend_request = ArrayField(
+    #     models.IntegerField(), blank=True, null=True, default=list)
 
     class Meta:
         ordering = ['username']
@@ -52,23 +54,12 @@ class Comment(models.Model):
         return f'{self.text} by {self.author} on {self.post}'
 
 
-# class Likes(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-#                              on_delete=models.CASCADE, related_name='user_likes')
-#     post = models.ForeignKey(
-#         Post, on_delete=models.CASCADE, related_name='post_likes')
+# class FriendRequest(models.Model):
+#     user = models.ForeignKey(
+#         Profile, on_delete=models.CASCADE, related_name='sent_friend_requests')
+#     friend = models.ForeignKey(
+#         Profile, on_delete=models.CASCADE, related_name='received_friend_requests')
 #     created_at = models.DateTimeField(auto_now_add=True)
 
 #     def __str__(self):
-#         return f'{self.user} liked {self.post}'
-
-
-# class Dislike(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-#                              on_delete=models.CASCADE, related_name='user_dislikes')
-#     post = models.ForeignKey(
-#         Post, on_delete=models.CASCADE, related_name='post_dislikes')
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return f'{self.user} dislike {self.post}'
+#         return f'{self.sender} sent a friend request to {self.receiver}'

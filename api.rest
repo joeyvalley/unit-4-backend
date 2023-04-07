@@ -32,3 +32,24 @@ Content-Type: application/json
 }
 
 ###
+POST {{url}}api/create-comment/
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "post_id": 1,
+    "comment": "This is a comment2"
+}
+
+###
+POST {{url}}api/friend-request/
+Content-Type: application/json
+
+{
+  "username_id": 1,
+  "friend_id": 2
+}
+
+
+
+###
