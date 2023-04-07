@@ -20,9 +20,6 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.decorators import api_view
 
 import os
-import jwt
-
-# Admin panel views and serializers.
 
 
 class CategoryListView(APIView):
