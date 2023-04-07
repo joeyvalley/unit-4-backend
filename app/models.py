@@ -54,12 +54,12 @@ class Comment(models.Model):
         return f'{self.text} by {self.author} on {self.post}'
 
 
-class FriendRequest(models.Model):
-    user = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='sent_friend_requests')
-    friend = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='received_friend_requests')
-    created_at = models.DateTimeField(auto_now_add=True)
+# class FriendRequest(models.Model):
+#     user = models.ForeignKey(
+#         Profile, on_delete=models.CASCADE, related_name='sent_friend_requests')
+#     friend = models.ForeignKey(
+#         Profile, on_delete=models.CASCADE, related_name='received_friend_requests')
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f'{self.sender} sent a friend request to {self.receiver}'
+#     def __str__(self):
+#         return f'{self.sender} sent a friend request to {self.receiver}'
