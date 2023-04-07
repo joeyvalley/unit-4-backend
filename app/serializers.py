@@ -15,6 +15,10 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
+    def get_profile(self, obj):
+        profile = Profile.objects.filter(username=obj).first()
+        return ProfileSerializer(profile).data
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
