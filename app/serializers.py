@@ -21,9 +21,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('text', 'user')
 
 
 class PostSerializer(serializers.ModelSerializer):
