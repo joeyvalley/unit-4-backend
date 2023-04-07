@@ -16,15 +16,8 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
-class SimpleUserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = 'username'
-
-
 class CommentSerializer(serializers.ModelSerializer):
-    user = SimpleUserSerializer()
+    user = UserSerializer()
 
     class Meta:
         model = Comment
@@ -32,7 +25,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = SimpleUserSerializer()
+    author = UserSerializer()
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
