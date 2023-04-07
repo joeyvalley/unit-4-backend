@@ -20,11 +20,7 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username')
-
-    def get_profile(self, obj):
-        profile = Profile.objects.filter(username=obj).first()
-        return ProfileSerializer(profile).data
+        fields = 'username'
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -36,7 +32,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
+    author = SimpleUserSerializer()
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
