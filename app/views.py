@@ -164,6 +164,13 @@ def GetUser(request, user_id):
 
 
 @api_view(['GET'])
+def GetAllUserPosts(request, user_id):
+    posts = Post.objects.filter(author=user_id)
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def GetPostImage(request, img):
     # Get the path to the image file
     image_path = os.path.join(settings.BASE_DIR, f'posts/{img}')

@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/home/', mainFeed, name="main-feed"),
     path('api/post/<str:post_id>', individualPost, name="individual-post"),
     path('api/users/<str:user_id>', GetUser, name="user-profile"),
+    path('api/posts/<str:user_id>', GetAllUserPosts, name="get-grid"),
     path('posts/<str:img>', GetPostImage, name="see-image"),
     path('avatars/<str:img>', GetProfilePicture, name="see-image"),
     path('api/create-profile/', CreateProfile, name="create-profile"),
