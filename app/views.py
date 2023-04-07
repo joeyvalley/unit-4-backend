@@ -329,8 +329,7 @@ class AuthenticateUser(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print(token)
-        return Response({'token': token.key, 'username': request.data['username']})
+        return Response({'token': token.key, 'username': request.data['username'], 'id': user.id})
 
 
 class VerifyAuthentication(APIView):
