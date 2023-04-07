@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ###
-POST {{url}}api/create-comment/
+GET {{url}}api/create-comment/
 Content-Type: application/json
 
 {
@@ -42,14 +42,13 @@ Content-Type: application/json
 }
 
 ###
-POST {{url}}api/friend-request/
+POST {{url}}api/follow/
 Content-Type: application/json
 
 {
-  "username_id": 1,
-  "friend_id": 2
+  "user_id": 2,
+  "username": "greg",
+  "follow": 1
 }
-
-
 
 ###

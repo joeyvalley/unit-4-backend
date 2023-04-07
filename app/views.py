@@ -17,7 +17,8 @@ from rest_framework import permissions, viewsets, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
+
 
 import os
 
@@ -312,14 +313,41 @@ def createComment(request):
     return Response({'Comments': post.text})
 
 
-# @api_view(['POST'])
-# def FriendRequest(request):
-#     user_id = request.data['user_id']
-#     # friend_id = request.data['friend_id']
-#     user = Profile.objects.get(username=user_id)
-#     # friend = Profile.objects.get(username=friend_id)
-#     print('FriendRequest')
-#     return Response({'Friend Request': 'Sent'})
+@api_view(['DELETE'])
+def deleteComment(request, comment_id):
+    if request.method == 'DELETE':
+        comment = Comment.objects.get(id=comment_id)
+        comment.delete()
+        return Response('Comment Deleted')
+
+
+# Suggested code for following users
+@action(detail=False, methods=['post'])
+def follow(request, pk=None):
+    user = Profile.get_object(request.user.pk)
+    user.following.add(request.user)
+    user.save()
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def follow(request):
+    user_id = request.data['user_id']
+    # user = Profile.objects.get(user_id=int(user))
+    # user = Profile.objects.get(username_id=int(user_id))
+    # username = request.data['username']
+    # print(user_id, username)
+    # following = Profile.objects.get(username=username)
+    # getFollower = request.data['follow']
+    # print(getFollower)
+    # if option == 'getFollow':
+    # user.following.append(following)
+    # user.save()
+    # return Response('Followed')
+    # elif option == 'unfollow':
+    #     user.following.remove(following)
+    #     user.save()
+    return Response('following')
 
 
 class AuthenticateUser(ObtainAuthToken):
