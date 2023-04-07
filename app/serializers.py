@@ -15,13 +15,20 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username')
+
     def get_profile(self, obj):
         profile = Profile.objects.filter(username=obj).first()
         return ProfileSerializer(profile).data
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = SimpleUserSerializer()
 
     class Meta:
         model = Comment
