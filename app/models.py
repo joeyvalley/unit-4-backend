@@ -51,7 +51,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.text} by {self.author} on {self.post}'
+        return f'{self.text} by {self.user} on {self.post}'
 
 
 # class FriendRequest(models.Model):
