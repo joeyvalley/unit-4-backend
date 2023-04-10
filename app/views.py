@@ -314,21 +314,14 @@ def createComment(request):
     return Response({'Comments': post.text})
 
 
-@api_view(['DELETE'])
-def deleteComment(request, comment_id):
-    if request.method == 'DELETE':
-        comment = Comment.objects.get(id=comment_id)
-        comment.delete()
-        return Response('Comment Deleted')
-
-
-# Suggested code for following users
-@action(detail=False, methods=['post'])
-def follow(request, pk=None):
-    user = Profile.get_object(request.user.pk)
-    user.following.add(request.user)
-    user.save()
-    return Response(status=status.HTTP_200_OK)
+# @api_view(['POST'])
+# def FriendRequest(request):
+#     user_id = request.data['user_id']
+#     # friend_id = request.data['friend_id']
+#     user = Profile.objects.get(username=user_id)
+#     # friend = Profile.objects.get(username=friend_id)
+#     print('FriendRequest')
+#     return Response({'Friend Request': 'Sent'})
 
 
 class AuthenticateUser(ObtainAuthToken):
