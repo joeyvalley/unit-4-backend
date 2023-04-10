@@ -272,14 +272,14 @@ def like(request):
     post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
     if user_id in post.liked_by:
-        # post.liked_by.remove(user_id)
-        # post.save()
-        # print("removed like")
-        return Response({'current likes': post.liked_by})
-    # post.liked_by.append(user_id)
-    # post.save()
-    # print()
-    # return Response({'current like': post.liked_by})
+        post.liked_by.remove(user_id)
+        post.save()
+        print("removed like")
+        return Response({'current like': post.liked_by})
+    post.liked_by.append(user_id)
+    post.save()
+    print()
+    return Response({'current like': post.liked_by})
 
 
 @api_view(['POST'])
