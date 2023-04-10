@@ -312,6 +312,16 @@ def createComment(request):
     return Response({'Comments': post.text})
 
 
+# @api_view(['POST'])
+# def FriendRequest(request):
+#     user_id = request.data['user_id']
+#     # friend_id = request.data['friend_id']
+#     user = Profile.objects.get(username=user_id)
+#     # friend = Profile.objects.get(username=friend_id)
+#     print('FriendRequest')
+#     return Response({'Friend Request': 'Sent'})
+
+
 class AuthenticateUser(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
