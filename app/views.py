@@ -341,6 +341,6 @@ class VerifyAuthentication(APIView):
         try:
             token_obj = Token.objects.get(key=token)
         except Token.DoesNotExist:
-            raise AuthenticationFailed('Invalid token')
+            return Response({'is_valid': False})
 
-        return Response(token)
+        return Response({'is_valid': True})
