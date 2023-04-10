@@ -14,7 +14,7 @@ Content-Type: application/json
 
 
 ###
-POST {{url}}api/edit-post/
+POST {{url}}api/like/
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ###
-POST {{url}}api/rate-post/
+POST {{url}}api/dislike/
 Content-Type: application/json
 
 {

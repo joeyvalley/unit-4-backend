@@ -273,14 +273,14 @@ def like(request):
     post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
     if user_id in post.liked_by:
+        post.liked_by.remove(user_id)
         return Response({'current like': post.liked_by})
 
-    # post.liked_by.remove(user_id)
     #     post.save()
-    #     print("removed like")
-    #     return Response({'current like': post.liked_by})
+        # print("removed like")
     # post.liked_by.append(user_id)
     # post.save()
+    # return Response({'current like': post.liked_by})
     # print()
 
 
@@ -290,8 +290,8 @@ def dislike(request):
     post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
     if user_id in post.dislike_by:
+        post.dislike_by.remove(user_id)
         return Response({'Dislikes': post.dislike_by})
-    #     post.dislike_by.remove(user_id)
     #     post.save()
     #     print("Hate it")
     #     return Response({'Dislikes': post.dislike_by})
