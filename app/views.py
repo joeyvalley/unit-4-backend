@@ -337,11 +337,11 @@ class VerifyAuthentication(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        token = request.data.get('token')
+        auth_header = request.META.get('HTTP_AUTHORIZATION')
+        if not auth_header:
+            return Response('Authorization header missing', status=400)
+        try:
+            token = auth_header.split(' ')[1]
+        except IndexError:
+            return Response('Invalid authorization header', status=400)
         return Response(token)
-        # try:
-        #     token_obj = Token.objects.get(key=token)
-        # except Token.DoesNotExist:
-        #     return Response({'is_valid': False})
-
-        # return Response({'is_valid': True})
