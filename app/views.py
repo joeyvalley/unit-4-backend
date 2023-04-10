@@ -338,9 +338,10 @@ class VerifyAuthentication(APIView):
 
     def post(self, request):
         token = request.data.get('token')
-        try:
-            token_obj = Token.objects.get(key=token)
-        except Token.DoesNotExist:
-            return Response({'is_valid': False})
+        return Response(token)
+        # try:
+        #     token_obj = Token.objects.get(key=token)
+        # except Token.DoesNotExist:
+        #     return Response({'is_valid': False})
 
-        return Response({'is_valid': True})
+        # return Response({'is_valid': True})
