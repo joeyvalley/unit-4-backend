@@ -337,7 +337,6 @@ class VerifyAuthentication(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print("geelo")
-        # token = request.data.get('token')
-        # print()
-        # return Response(token)
+        token = request.data.get('token')
+        print()
+        return Response(token)
