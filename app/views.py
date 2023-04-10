@@ -330,26 +330,6 @@ def follow(request, pk=None):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-def follow(request):
-    user_id = request.data['user_id']
-    # user = Profile.objects.get(user_id=int(user))
-    # user = Profile.objects.get(username_id=int(user_id))
-    # username = request.data['username']
-    # print(user_id, username)
-    # following = Profile.objects.get(username=username)
-    # getFollower = request.data['follow']
-    # print(getFollower)
-    # if option == 'getFollow':
-    # user.following.append(following)
-    # user.save()
-    # return Response('Followed')
-    # elif option == 'unfollow':
-    #     user.following.remove(following)
-    #     user.save()
-    return Response('following')
-
-
 class AuthenticateUser(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
