@@ -290,14 +290,14 @@ def dislike(request):
     post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
     if user_id in post.dislike_by:
-        post.dislike_by.remove(user_id)
-        post.save()
-        print("Hate it")
         return Response({'Dislikes': post.dislike_by})
-    post.dislike_by.append(user_id)
-    post.save()
-    print('Hated it')
-    return Response({'Dislikes': post.dislike_by})
+    #     post.dislike_by.remove(user_id)
+    #     post.save()
+    #     print("Hate it")
+    #     return Response({'Dislikes': post.dislike_by})
+    # post.dislike_by.append(user_id)
+    # post.save()
+    # print('Hated it')
 
 
 @api_view(['POST'])
