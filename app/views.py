@@ -271,7 +271,7 @@ def CreatePost(request):
 def like(request):
 
     post_id = request.data['post_id']
-    # post = Post.objects.get(id=post_id)
+    post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
     # if user_id in post.liked_by:
     #     post.liked_by.remove(user_id)
@@ -281,7 +281,7 @@ def like(request):
     # post.liked_by.append(user_id)
     # post.save()
     # print()
-    return Response({'the post': post_id})
+    return Response({'the post': post})
 
 
 @api_view(['POST'])
