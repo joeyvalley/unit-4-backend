@@ -268,34 +268,35 @@ def CreatePost(request):
 
 @api_view(['POST'])
 def like(request):
+
     post_id = request.data['post_id']
-    post = Post.objects.get(id=post_id)
+    # post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
-    if user_id in post.liked_by:
-        post.liked_by.remove(user_id)
-        post.save()
-        print("removed like")
-        return Response({'current like': post.liked_by})
-    post.liked_by.append(user_id)
-    post.save()
-    print()
-    return Response({'current like': post.liked_by})
+    # if user_id in post.liked_by:
+    #     post.liked_by.remove(user_id)
+    #     post.save()
+    #     print("removed like")
+    #     return Response({'current like': post.liked_by})
+    # post.liked_by.append(user_id)
+    # post.save()
+    # print()
+    return Response({'the post': post_id})
 
 
 @api_view(['POST'])
 def dislike(request):
     post_id = request.data['post_id']
-    post = Post.objects.get(id=post_id)
+    # post = Post.objects.get(id=post_id)
     user_id = request.data['user_id']
-    if user_id in post.dislike_by:
-        post.dislike_by.remove(user_id)
-        post.save()
-        print("Hate it")
-        return Response({'Dislikes': post.dislike_by})
-    post.dislike_by.append(user_id)
-    post.save()
-    print('Hated it')
-    return Response({'Dislikes': post.dislike_by})
+    # if user_id in post.dislike_by:
+    #     post.dislike_by.remove(user_id)
+    #     post.save()
+    #     print("Hate it")
+    #     return Response({'Dislikes': post.dislike_by})
+    # post.dislike_by.append(user_id)
+    # post.save()
+    # print('Hated it')
+    return Response({'the post': post_id})
 
 
 @api_view(['POST'])
