@@ -17,7 +17,8 @@ from rest_framework import permissions, viewsets, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
+
 
 import os
 
