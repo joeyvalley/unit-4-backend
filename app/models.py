@@ -14,8 +14,7 @@ class Profile(models.Model):
     posts = ArrayField(models.IntegerField(), blank=True, null=True)
     likes = ArrayField(models.IntegerField(), blank=True, null=True)
     dislikes = ArrayField(models.IntegerField(), blank=True, null=True)
-    # friend_request = ArrayField(
-    #     models.IntegerField(), blank=True, null=True, default=list)
+    follow = ArrayField(models.IntegerField(), blank=True, null=True)
 
     class Meta:
         ordering = ['username']
@@ -53,14 +52,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.text} by {self.user} on {self.post}'
-
-
-# class FriendRequest(models.Model):
-#     user = models.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name='sent_friend_requests')
-#     friend = models.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name='received_friend_requests')
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return f'{self.sender} sent a friend request to {self.receiver}'

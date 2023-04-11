@@ -17,7 +17,8 @@ from rest_framework import permissions, viewsets, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
+
 
 import os
 
@@ -273,13 +274,14 @@ def like(request):
     user_id = request.data['user_id']
     if user_id in post.liked_by:
         post.liked_by.remove(user_id)
-        post.save()
-        print("removed like")
         return Response({'current like': post.liked_by})
-    post.liked_by.append(user_id)
-    post.save()
-    print()
-    return Response({'current like': post.liked_by})
+
+    #     post.save()
+        # print("removed like")
+    # post.liked_by.append(user_id)
+    # post.save()
+    # return Response({'current like': post.liked_by})
+    # print()
 
 
 @api_view(['POST'])
@@ -289,13 +291,13 @@ def dislike(request):
     user_id = request.data['user_id']
     if user_id in post.dislike_by:
         post.dislike_by.remove(user_id)
-        post.save()
-        print("Hate it")
         return Response({'Dislikes': post.dislike_by})
-    post.dislike_by.append(user_id)
-    post.save()
-    print('Hated it')
-    return Response({'Dislikes': post.dislike_by})
+    #     post.save()
+    #     print("Hate it")
+    #     return Response({'Dislikes': post.dislike_by})
+    # post.dislike_by.append(user_id)
+    # post.save()
+    # print('Hated it')
 
 
 @api_view(['POST'])
